@@ -7,4 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
+/.vscode/
+*.lock
 ###< symfony/framework-bundle ###
