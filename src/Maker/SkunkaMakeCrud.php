@@ -1,10 +1,30 @@
 <?php
 
+/**
+ * This file is part of the Skunka MakerBundle Extension package.
+ * 
+ * It require Symfony MakerBundle to work.
+ * 
+ * For their contribution to Symfony MakerBundle, thanks to :
+ *  - Javier Eguiluz <javier.eguiluz@gmail.com>
+ *  - Ryan Weaver <weaverryan@gmail.com>
+ *  - Kévin Dunglas <dunglas@gmail.com>
+ * 
+ * For the full copyright and licence information, please view the LICENCE
+ * file that was distributed with this source code.
+ */
+
 namespace Skunka\MakerBundle\Maker;
 
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\InputAwareMakerInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Core:
+ * - User should only add new content with include statement to allow difference between regenerate and overwrite options ?
+ */
 class SkunkaMakeCrud extends AbstractMaker implements InputAwareMakerInterface
 {
     public function __construct() {}
@@ -24,29 +44,34 @@ class SkunkaMakeCrud extends AbstractMaker implements InputAwareMakerInterface
         /**
          * Arguments :
          * - Entity class | Namespace
+         * - Custom template 
          * 
          * Options :
-         * - Regenerate !Overwrite
-         * - Overwrite !Regenerate
-         * - Custom template 
-         * - Tasks options (See interact())
-         * - Entity properties form type // --properties="[id => ignore, tasks => entitytype, phonenumber => teltype]
+         * - Worker: generate [default] | regenerate | overwrite -> define which worker should operate the CRUD generation 
+         * 
+         * Help.txt
          */
-    }
+        $command
+            ->addArgument('name', InuputArgument::OPTIONAL, sprintf('Class name or namespace to build CRUD. [WIP]'))
+            ->addOption('template', InputOption::OPTIONAL, 'Select template to use for generation. Default use: accessibility, bootstrap, stimulus and vuejs. See sk:maker:help for more informations [WIP]')
+            ->addOption('worker', InputOption::VALUE_NONE, 'Worker to use for CRUD operations: generate [default] | regenerate | overwrite. [WIP]')
+        ;
+    }   
 
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void 
     {
         /**
-         * Ask for entity class | namespace if not specified
+         * 1 - Ask for entity class | namespace if not specified
          * 
-         * Tasks :
-         * - Controller class exist | namespace -> true: ask for regenerate | overwrite | cancel  (For each exist class ?) -> false: continue
-         * - Repository not exist -> true: create -> false continue
-         * - Templates exist -> true: ask for regenrate | overwrite | cancel
-         * 
-         * Build taskArray
+         * 2 - Options warning
          * 
          */
+
+         // 1 - Ask for entity class | namespace if not specified
+         if ($input->getArgument('name')) {
+            return;
+         }
+
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void 
