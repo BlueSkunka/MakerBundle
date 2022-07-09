@@ -16,9 +16,15 @@
 
 namespace Skunka\MakerBundle\Maker;
 
+use Symfony\Bundle\MakerBundle\ConsoleStyle;
+use Symfony\Bundle\MakerBundle\DependencyBuilder;
+use Symfony\Bundle\MakerBundle\Generator;
+use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Bundle\MakerBundle\InputAwareMakerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -39,7 +45,7 @@ class SkunkaMakeCrud extends AbstractMaker implements InputAwareMakerInterface
         return 'Create or update CRUD for doctrine entity class';
     }
 
-    public function configureCommand(Command $command, InputConfiguration $inputConfig): void 
+    public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         /**
          * Arguments :
@@ -52,13 +58,13 @@ class SkunkaMakeCrud extends AbstractMaker implements InputAwareMakerInterface
          * Help.txt
          */
         $command
-            ->addArgument('name', InuputArgument::OPTIONAL, sprintf('Class name or namespace to build CRUD. [WIP]'))
-            ->addOption('template', InputOption::OPTIONAL, 'Select template to use for generation. Default use: accessibility, bootstrap, stimulus and vuejs. See sk:maker:help for more informations [WIP]')
+            ->addArgument('name', InputArgument::OPTIONAL, 'Class name or namespace to build CRUD. [WIP]')
+            ->addOption('template', InputOption::VALUE_NONE, 'Select template to use for generation. Default use: accessibility, bootstrap, stimulus and vuejs. See sk:maker:help for more informations [WIP]')
             ->addOption('worker', InputOption::VALUE_NONE, 'Worker to use for CRUD operations: generate [default] | regenerate | overwrite. [WIP]')
         ;
     }   
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void 
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         /**
          * 1 - Ask for entity class | namespace if not specified
@@ -74,14 +80,14 @@ class SkunkaMakeCrud extends AbstractMaker implements InputAwareMakerInterface
 
     }
 
-    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void 
+    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         /**
          * Execute tasks [ErrorHandling -> keep tasks list and status then ask for rollback ]
          */
     }
 
-    public function configureDependencies(DependencyBuilder $dependencies): void 
+    public function configureDependencies(DependencyBuilder $dependencies, InputInterface $input = null): void
     {
 
     }
